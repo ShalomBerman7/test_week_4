@@ -1,4 +1,4 @@
-
+from encrypt_decrypt import abc_list, caesar_encrypt, caesar_decrypt, fence_encrypt, fence_decrypt
 
 from fastapi import FastAPI
 import uvicorn
@@ -7,51 +7,6 @@ import json
 
 app = FastAPI()
 items = []
-abc_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-
-def caesar_cipher_encrypt(abc, txt): #מקבל ומצפין
-    result = ''
-    txt = txt.replace(' ','')
-    for i in range(len(txt)):
-        for j in range(len(abc)):
-            if txt[i] == abc[j]:
-                result += abc[(j + 16) % 25]
-    return result
-
-
-def caesar_cipher_decrypt(abc, txt): #מקבל ומפענח
-    result = ''
-    for i in range(len(txt)):
-        for j in range(len(abc)):
-            if txt[i] == abc[j]:
-                result += abc[(j - 16) % 25]
-    return result
-
-
-
-def fence_cipher_endpoints(txt): #הצפנה
-    txt = txt.replace(' ', '')
-    res = ''
-    res1 = ''
-    for i in range(len(txt)):
-        if i % 2 == 0:
-            res += txt[i]
-        else:
-            res1 += txt[i]
-    return res + res1
-
-
-def fence_cipher_dedpoints(txt): #פיענוח
-    x = len(txt) // 2
-    res = txt[ :x]
-    res1 = txt[x: ]         #צריך לסיים
-    result = ''
-    for i in range(len(res)):
-        result += res[i]
-        result += res1[i]
-    return result
-
 
 
 def load_data():
@@ -68,22 +23,24 @@ def save_data(data):
 
 @app.get("/test")
 def get_test():
-    response = load_data()
-    return response
+    return {"msg": "hi from test"}
 
 
 @app.get("/test/{name}")
 def get_test_name(name: str):
     with open("names_file.txt", "a") as f:
         f.write(name)
+    return {"msg": "saved user"}
 
 
 @app.post("/caesar")
-def post_data(text: str, offset: int):
-    json_data = caesar_cipher_encrypt(abc_list, load_data())
-    body = {"text": text, "offset": offset,  "mode": "encrypt"}
-    save_data(body)
-    return json_data
+def post_data(text: str, offset: int, mode:str):
+    if mode == "encrypt":
+        result = caesar_encrypt(abc_list, offset, text)
+        return {"encrypted_text": result}
+    else:
+        result = caesar_decrypt(abc_list, offset, text)
+        return {"decrypted_text": result}
 
 
 
