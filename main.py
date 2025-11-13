@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 import json
-import string
+
 
 app = FastAPI()
 items = []
@@ -16,6 +16,7 @@ def caesar_cipher_encrypt(abc, txt): #מקבל ומצפין
             if txt[i] == abc[j]:
                 result += abc[(j + 16) % 25]
     return result
+
 
 def caesar_cipher_decrypt(abc, txt): #מקבל ומפענח
     result = ''
@@ -38,6 +39,7 @@ def fence_cipher_endpoints(txt): #הצפנה
             res1 += txt[i]
     return res + res1
 
+
 def fence_cipher_dedpoints(txt): #פיענוח
     x = len(txt) // 2
     res = txt[ :x]
@@ -47,6 +49,7 @@ def fence_cipher_dedpoints(txt): #פיענוח
         result += res[i]
         result += res1[i]
     return result
+
 
 
 def load_data():
@@ -63,8 +66,9 @@ def save_data(data):
 
 @app.get("/test")
 def get_test():
-    Response = load_data()
-    return Response
+    response = load_data()
+    return response
+
 
 @app.get("/test/{name}")
 def get_test_name(name: str):
@@ -81,8 +85,6 @@ def post_data(text: str, offset: int):
 
 
 
-
 if __name__ == "__main__":
 
     uvicorn.run(app, host="localhost", port=8000)
-
