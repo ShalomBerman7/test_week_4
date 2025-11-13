@@ -10,7 +10,7 @@ items = []
 abc_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 
-def caesar_cipher_encrypt(abc, txt): #מקבל ומצפין
+def caesar_cipher_encrypt(abc, txt):
     result = ''
     txt = txt.replace(' ','')
     for i in range(len(txt)):
@@ -20,7 +20,7 @@ def caesar_cipher_encrypt(abc, txt): #מקבל ומצפין
     return result
 
 
-def caesar_cipher_decrypt(abc, txt): #מקבל ומפענח
+def caesar_cipher_decrypt(abc, txt):
     result = ''
     for i in range(len(txt)):
         for j in range(len(abc)):
@@ -30,7 +30,7 @@ def caesar_cipher_decrypt(abc, txt): #מקבל ומפענח
 
 
 
-def fence_cipher_endpoints(txt): #הצפנה
+def fence_cipher_endpoints(txt):
     txt = txt.replace(' ', '')
     res = ''
     res1 = ''
@@ -42,10 +42,10 @@ def fence_cipher_endpoints(txt): #הצפנה
     return res + res1
 
 
-def fence_cipher_dedpoints(txt): #פיענוח
+def fence_cipher_dedpoints(txt):
     x = len(txt) // 2
     res = txt[ :x]
-    res1 = txt[x: ]         #צריך לסיים
+    res1 = txt[x: ]
     result = ''
     for i in range(len(res)):
         result += res[i]
