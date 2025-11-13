@@ -1,4 +1,3 @@
-Shalom
-Berman
+שלום ברמן
 negev
 212797740
