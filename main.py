@@ -1,0 +1,103 @@
+from fastapi import FastAPI
+import uvicorn
+import json
+import string
+
+app = FastAPI()
+items = []
+abc_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+
+def caesar_cipher_encrypt(abc, txt): #מקבל ומצפין
+    result = ''
+    txt = txt.replace(' ','')
+    for i in range(len(txt)):
+        for j in range(len(abc)):
+            if txt[i] == abc[j]:
+                result += abc[(j + 16) % 25]
+    return result
+
+def caesar_cipher_decrypt(abc, txt): #מקבל ומפענח
+    result = ''
+    for i in range(len(txt)):
+        for j in range(len(abc)):
+            if txt[i] == abc[j]:
+                result += abc[(j - 16) % 25]
+    return result
+
+
+
+def fence_cipher_endpoints(txt): #הצפנה
+    txt = txt.replace(' ', '')
+    res = ''
+    res1 = ''
+    for i in range(len(txt)):
+        if i % 2 == 0:
+            res += txt[i]
+        else:
+            res1 += txt[i]
+    return res + res1
+
+def fence_cipher_dedpoints(txt): #פיענוח
+    x = len(txt) // 2
+    res = txt[ :x]
+    res1 = txt[x: ]         #צריך לסיים
+    result = ''
+    for i in range(len(res)):
+        result += res[i]
+        result += res1[i]
+    return result
+
+
+def load_data():
+    with open('data_json/data.json', 'r') as f:
+        data1 = json.load(f)
+    return data1
+
+
+def save_data(data):
+    with open('data_json/data.json', 'w') as f:
+        json.dump(data, f)
+
+
+
+@app.get("/test")
+def get_test():
+    Response = load_data()
+    return Response
+
+@app.get("/test/:name")
+def get_test_name():
+    Response = load_data()
+    return Response
+
+
+@app.put("/items/{item_id}")
+def create_items(item_id: int,
+                 price: int, ):
+    new_item = {"item_id": item_id,
+                "price": price}
+    items = load_data()
+    for item in items:
+        if item["item_id"] == new_item["item_id"]:
+            item["price"] = new_item["price"]
+            save_data(items)
+            return f"price of {new_item} update"
+    items.append(new_item)
+    save_data(items)
+    return f"price of {new_item} created"
+
+
+@app.post("/items/")
+def create_item(name: str):
+ new_item = {"id": len(items) + 1, "name": name} # body of the request
+ items.append(new_item)
+ return new_item
+
+
+if __name__ == "__main__":
+    # data = {'msg': 'hi from test'}
+    # save_data(data)
+    print(load_data())
+    uvicorn.run(app, host="localhost", port=8000)
+
