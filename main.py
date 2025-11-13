@@ -66,33 +66,19 @@ def get_test():
     Response = load_data()
     return Response
 
-@app.get("/test/:name")
-def get_test_name():
-    Response = load_data()
-    return Response
+@app.get("/test/{name}")
+def get_test_name(name: str):
+    with open("names_file.txt", "a") as f:
+        f.write(name)
 
 
-@app.put("/items/{item_id}")
-def create_items(item_id: int,
-                 price: int, ):
-    new_item = {"item_id": item_id,
-                "price": price}
-    items = load_data()
-    for item in items:
-        if item["item_id"] == new_item["item_id"]:
-            item["price"] = new_item["price"]
-            save_data(items)
-            return f"price of {new_item} update"
-    items.append(new_item)
-    save_data(items)
-    return f"price of {new_item} created"
-
-
-@app.post("/items/")
+@app.post("/caesar")
 def create_item(name: str):
- new_item = {"id": len(items) + 1, "name": name} # body of the request
- items.append(new_item)
- return new_item
+    new_item = {"id": len(items) + 1, "name": name} # body of the request
+    items.append(new_item)
+    return new_item
+
+
 
 
 if __name__ == "__main__":
