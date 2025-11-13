@@ -73,17 +73,16 @@ def get_test_name(name: str):
 
 
 @app.post("/caesar")
-def create_item(name: str):
-    new_item = {"id": len(items) + 1, "name": name} # body of the request
-    items.append(new_item)
-    return new_item
+def post_data(text: str, offset: int):
+    json_data = caesar_cipher_encrypt(abc_list, load_data())
+    body = {"text": text, "offset": offset,  "mode": "encrypt"}
+    save_data(body)
+    return json_data
 
 
 
 
 if __name__ == "__main__":
-    # data = {'msg': 'hi from test'}
-    # save_data(data)
-    print(load_data())
+
     uvicorn.run(app, host="localhost", port=8000)
 
