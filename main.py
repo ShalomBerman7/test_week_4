@@ -44,6 +44,18 @@ def post_data(text: str, offset: int, mode:str):
         return {"decrypted_text": result}
 
 
+@app.get("/fence/encrypt")
+def fence_encrypt(text: str):
+    result = fence_encrypt(text)
+    return {"encrypted_text": result}
+
+
+@app.post("/fence/decrypt")
+def fence_decrypt(text: str):
+    result = fence_decrypt(text)
+    return {"decrypted_text": result}
+
+
 
 if __name__ == "__main__":
 
