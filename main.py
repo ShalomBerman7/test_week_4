@@ -2,24 +2,9 @@ from encrypt_decrypt import abc_list, caesar_encrypt, caesar_decrypt, fence_encr
 
 from fastapi import FastAPI
 import uvicorn
-import json
 
 
 app = FastAPI()
-items = []
-
-
-
-def load_data():
-    with open('data_json/data.json', 'r') as f:
-        data1 = json.load(f)
-    return data1
-
-
-def save_data(data):
-    with open('data_json/data.json', 'w') as f:
-        json.dump(data, f)
-
 
 
 @app.get("/test")
@@ -44,14 +29,14 @@ def post_data(text: str, offset: int, mode:str):
         return {"decrypted_text": result}
 
 
-@app.get("/fence/encrypt")
-def fence_encrypt(text: str):
+@app.get("/fence/encrypt/")
+def get_fence_encrypt(text: str):
     result = fence_encrypt(text)
     return {"encrypted_text": result}
 
 
-@app.post("/fence/decrypt")
-def fence_decrypt(text: str):
+@app.post("/fence/decrypt/")
+def post_fence_decrypt(text: str):
     result = fence_decrypt(text)
     return {"decrypted_text": result}
 
