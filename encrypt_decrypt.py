@@ -38,11 +38,12 @@ def fence_encrypt(txt):
 
 
 def fence_decrypt(txt):
-    x = len(txt) // 2
-    res = txt[ :x]
-    res1 = txt[x: ]
     result = ''
-    for i in range(len(res)):
-        result += res[i]
-        result += res1[i]
+    x = len(txt)
+    y = x // 2
+    for i in range(len(txt)//2):
+        result += txt[i]
+        result += txt[y + i + (x % 2)]
+    if x % 2 == 1:
+        result += txt[x // 2]
     return result
