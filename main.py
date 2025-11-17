@@ -1,10 +1,16 @@
 from encrypt_decrypt import abc_list, caesar_encrypt, caesar_decrypt, fence_encrypt, fence_decrypt
-
+from pydantic import BaseModel
 from fastapi import FastAPI
 import uvicorn
 
 
 app = FastAPI()
+
+
+class BodyRequest(BaseModel):
+    text: str
+    offset: int
+    mode: str
 
 
 @app.get("/test")
@@ -19,13 +25,14 @@ def get_test_name(name: str):
     return {"msg": "saved user"}
 
 
-@app.post("/caesar")
-def post_data(text: str, offset: int, mode:str):
-    if mode == "encrypt":
-        result = caesar_encrypt(abc_list, offset, text)
+@app.post("/caesar/")
+def post_data(req: BodyRequest):
+    # req.text: str, req.offset: int, req.mode: str
+    if req.mode == "encrypt":
+        result = caesar_encrypt(abc_list, req.offset, req.text)
         return {"encrypted_text": result}
     else:
-        result = caesar_decrypt(abc_list, offset, text)
+        result = caesar_decrypt(abc_list, req.offset, req.text)
         return {"decrypted_text": result}
 
 
