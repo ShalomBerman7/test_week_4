@@ -15,7 +15,7 @@ def get_test():
 @app.get("/test/{name}")
 def get_test_name(name: str):
     with open("names_file.txt", "a") as f:
-        f.write(name)
+        f.write(f'\n{name}')
     return {"msg": "saved user"}
 
 
